@@ -65,14 +65,10 @@ public class Cache<K, V> {
      * @return Whether the searched-for value is present in the cache.
      */
     // IMO, `hasValue` is a better name for this method.
-    public Boolean hasKey(K key) {
+    public boolean hasKey(K key) {
         readLock.lock();
         try {
-            if (getValue(key) == null) {
-                return Boolean.valueOf(false);
-            } else {
-                return Boolean.valueOf(true);
-            }
+            return getValue(key) != null;
         } finally {
             readLock.unlock();
         }

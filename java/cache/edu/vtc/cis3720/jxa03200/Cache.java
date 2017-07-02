@@ -55,12 +55,8 @@ public class Cache<K, V> {
      * @return Whether the searched-for value is present in the cache.
      */
     // IMO, `hasValue` is a better name for this method.
-    public synchronized Boolean hasKey(K key) {
-        if (getValue(key) == null) {
-            return Boolean.valueOf(false);
-        } else {
-            return Boolean.valueOf(true);
-        }
+    public synchronized boolean hasKey(K key) {
+        return getValue(key) != null;
     }
 
     /**
@@ -72,25 +68,24 @@ public class Cache<K, V> {
      * @param value One half of a key-value pair to store in the cache.
      */
     public synchronized void storeValue(K key, V value) {
+        SoftReference<V> ref = cache.get(key);
         cache.put(key, new SoftReference<V>(value));
+
+        // Is the cache unbounded?
         if (size == null) {
             return;
         }
-        Integer index = recentlyUsed.indexOf(key);
-        if (index == -1) {
-            // This key-value pair is new to the cache. Insert the key at the
-            // head of the recently used list, and if the cache is overflowing,
-            // drop the key-value pair at the tail of the recently used list.
-            recentlyUsed.add(0, key);
-            if (recentlyUsed.size() > size) {
-                cache.remove(recentlyUsed.get(size));
-                recentlyUsed.remove((int)size); // Remove by index, NOT value!
-            }
-        } else {
-            // This key-value pair is already in the cache. Move the key to the
-            // head of the recently used list.
-            recentlyUsed.remove((int)index); // Remove by index, NOT value!
-            recentlyUsed.add(0, key);
+
+        // Was the key already present in the cache?
+        if (ref != null) {
+            recentlyUsed.remove(key);
+        }
+        recentlyUsed.add(0, key);
+
+        // Is the cache now overflowing?
+        if (recentlyUsed.size() > size) {
+            cache.remove(recentlyUsed.get(size));
+            recentlyUsed.remove((int)size); // Remove by index, not value.
         }
     }
 
@@ -102,21 +97,21 @@ public class Cache<K, V> {
      * @return The value, if it is present in the cache. Otherwise, null.
      */
     public synchronized V getValue(K key) {
-        // If this cache is bounded and if the key-value pair being fetched is
-        // in the cache, let the key-value pair being fetched be listed as the
-        // most recently used.
-        if (size != null) {
-            Integer index = recentlyUsed.indexOf(key);
-            if (!index.equals(Integer.valueOf(-1))) {
-                recentlyUsed.remove((int)index); // Remove by index, NOT value!
-                recentlyUsed.add(0, key);
-            }
-        }
         SoftReference<V> ref = cache.get(key);
+
+        // Is the key-value pair absent from the cache?
         if (ref == null) {
             return null;
-        } else {
-            return ref.get(); // Null if reference has died.
         }
+
+        // Is the reference to the value dead?
+        V value = ref.get();
+        recentlyUsed.remove(key);
+        if (value == null) {
+            cache.remove(key);
+        } else {
+            recentlyUsed.add(0, key);
+        }
+        return value;
     }
 }
