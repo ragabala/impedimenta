@@ -26,14 +26,13 @@ import java.util.Map;
  * lower throughput in multi-threaded read-heavy use cases.
  */
 public class Cache<K, V> {
-    private final Map<K, SoftReference<V>> cache = new HashMap<>();
+    private final Map<K, SoftReference<V>> cache;
     private final Integer size; // null indicates unlimited size
     private final List<K> recentlyUsed; // only set if size is non-null
 
     /** Create a cache of unlimited size. */
     public Cache() {
-        size = null;
-        recentlyUsed = null;
+        this(null);
     }
 
     /** Create a cache of limited size.
@@ -43,6 +42,7 @@ public class Cache<K, V> {
     public Cache(Integer size) {
         this.size = size;
         recentlyUsed = new ArrayList<K>();
+        cache = new HashMap<>();
     }
 
     /** Tell whether a value is present in the cache.
