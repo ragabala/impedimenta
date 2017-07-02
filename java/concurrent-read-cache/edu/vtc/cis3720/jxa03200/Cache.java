@@ -9,7 +9,8 @@ import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-/** A cache, implemented with weak references.
+/**
+ * A cache, implemented with weak references.
  *
  * This cache is thread-safe. The reader and writer methods are implemented with
  * a read-write lock. Beware that this cache is *not* implemented with the
@@ -41,7 +42,8 @@ public class Cache<K, V> {
         this(null);
     }
 
-    /** Create a cache of limited size.
+    /**
+     * Create a cache of limited size.
      *
      * @param size The number of key-value pairs the cache may hold.
      */
@@ -55,7 +57,8 @@ public class Cache<K, V> {
         writeLock = lock.writeLock();
     }
 
-    /** Tell whether a value is present in the cache.
+    /**
+     * Tell whether a value is present in the cache.
      *
      * @param key When executed, this method will search for the value
      * corresponding to this key.
@@ -125,7 +128,7 @@ public class Cache<K, V> {
             if (ref == null) {
                 return null;
             } else {
-                return ref.get();
+                return ref.get(); // Null if reference has died.
             }
         } finally {
             readLock.unlock();
