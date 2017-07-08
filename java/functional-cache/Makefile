@@ -25,13 +25,9 @@ docs:
 test: edu/vtc/cis3720/jxa03200/TestCache.class
 	CLASSPATH=$(CLASSPATH) java org.junit.runner.JUnitCore edu.vtc.cis3720.jxa03200.TestCache
 
-edu/vtc/cis3720/jxa03200/Cache.class: edu/vtc/cis3720/jxa03200/Cache.java
+edu/vtc/cis3720/jxa03200/TestCache.class: edu/vtc/cis3720/jxa03200/Cache.class
 
-edu/vtc/cis3720/jxa03200/TestCache.class: edu/vtc/cis3720/jxa03200/TestCache.java \
-	edu/vtc/cis3720/jxa03200/Cache.class
+%.class: %.java
+	CLASSPATH=$(CLASSPATH) javac -Xlint $<
 
 .PHONY: help compile test
-
-.SUFFIXES: .java .class
-.java.class:
-	CLASSPATH=$(CLASSPATH) javac -Xlint $(@:.class=.java)
