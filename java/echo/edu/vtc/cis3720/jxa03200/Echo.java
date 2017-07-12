@@ -1,5 +1,6 @@
 package edu.vtc.cis3720.jxa03200;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -27,28 +28,27 @@ public class Echo {
      * @param params CLI arguments.
      */
     public static void main(String[] args) {
-        OptionParser parser = new OptionParser();
-        OptionSpec<Void> helpOption = parser
-            .accepts("h")
-            .forHelp();
-        OptionSpec<Integer> multiplyOption = parser
-            .accepts("m")
-            .withRequiredArg()
-            .ofType(Integer.class)
-            .defaultsTo(new Integer(1));
-        OptionSpec<Integer> nonOptions = parser
-            .nonOptions("Integers to be echoed.")
-            .ofType(Integer.class);
+        OptionParser parser = new OptionParser("h*m:");
         OptionSet options = parser.parse(args);
+
+        List<Integer> integers = new ArrayList<>();
+        for (Object obj: options.nonOptionArguments()) {
+            integers.add(Integer.valueOf((String)obj));
+        }
+        Integer multiply;
+        Object rawMultiply = options.valueOf("m");
+        if (rawMultiply == null) {
+            multiply = new Integer(1);
+        } else {
+            multiply = Integer.valueOf((String)rawMultiply);
+        }
+
         if (args.length == 0) {
             handleNoArguments();
-        } else if (options.has(helpOption)) {
+        } else if (options.has("h")) {
             handleHelpArgument();
         } else {
-            handleGoldenPath(
-                options.valuesOf(nonOptions),
-                options.valueOf(multiplyOption)
-            );
+            handleGoldenPath(integers, multiply);
         }
     }
 
