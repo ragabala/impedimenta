@@ -10,15 +10,15 @@ import joptsimple.OptionSpec;
 /** The CLI entry point for this application. */
 public class Echo {
     private static final List<String> helpMsg = Arrays.asList(
-        "Usage: java edu.vtc.cis3720.jxa03200.Echo [options] arguments",
+        "Usage: java edu.vtc.cis3720.jxa03200.Echo [options] integers",
         "",
-        "Print the given arguments to stdout, one per line.",
+        "Print the given integers to stdout, one per line.",
         "",
         "Options:",
         "  --help",
         "    Shot this message and exit.",
-        "  --upper-case",
-        "    Fully uppercase each argument."
+        "  --multiply <integer>",
+        "    Multiply each non-option integer by the given integer."
     );
 
     /**
@@ -31,11 +31,14 @@ public class Echo {
         OptionSpec<Void> helpOption = parser
             .accepts("help")
             .forHelp();
-        OptionSpec<Void> upperCaseOption = parser
-            .accepts("upper-case");
-        OptionSpec<String> nonOptions = parser
-            .nonOptions("Text to be upper-cased.")
-            .ofType(String.class);
+        OptionSpec<Integer> multiplyOption = parser
+            .accepts("multiply")
+            .withRequiredArg()
+            .ofType(Integer.class)
+            .defaultsTo(new Integer(1));
+        OptionSpec<Integer> nonOptions = parser
+            .nonOptions("Integers to be echoed.")
+            .ofType(Integer.class);
         OptionSet options = parser.parse(args);
         if (args.length == 0) {
             handleNoArguments();
@@ -44,7 +47,7 @@ public class Echo {
         } else {
             handleGoldenPath(
                 options.valuesOf(nonOptions),
-                options.has(upperCaseOption)
+                options.valueOf(multiplyOption)
             );
         }
     }
@@ -77,17 +80,11 @@ public class Echo {
      * Respond to the case where valid non-"help" arguments were passed.
      *
      * @param args The CLI arguments passed to this program.
-     * @param upperCase True if --upper-case was passed, or false otherwise.
+     * @param multiply The value to multiply each non-option argument by.
      */
-    private static void handleGoldenPath(List<String> args, boolean upperCase) {
-        if (upperCase) {
-            for (String arg: args) {
-                System.out.println(arg.toUpperCase());
-            }
-        } else {
-            for (String arg: args) {
-                System.out.println(arg);
-            }
+    private static void handleGoldenPath(List<Integer> args, Integer multiply) {
+        for (Integer arg: args) {
+            System.out.println(multiply * arg);
         }
     }
 }
