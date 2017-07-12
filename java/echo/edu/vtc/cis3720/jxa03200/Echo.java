@@ -29,10 +29,10 @@ public class Echo {
     public static void main(String[] args) {
         OptionParser parser = new OptionParser();
         OptionSpec<Void> helpOption = parser
-            .accepts("help")
+            .accepts("h")
             .forHelp();
         OptionSpec<Integer> multiplyOption = parser
-            .accepts("multiply")
+            .accepts("m")
             .withRequiredArg()
             .ofType(Integer.class)
             .defaultsTo(new Integer(1));
