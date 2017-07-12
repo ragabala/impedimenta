@@ -35,7 +35,7 @@ public class Echo {
             .accepts("multiply")
             .withRequiredArg()
             .ofType(Integer.class)
-            .defaultsTo(new Integer(1));
+            .required();
         OptionSpec<Integer> nonOptions = parser
             .nonOptions("Integers to be echoed.")
             .ofType(Integer.class);
