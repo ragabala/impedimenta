@@ -14,7 +14,7 @@
       state: directory
       owner: root
       group: root
-    with_items:
+    loop:
     - /var/local/subsonic
     - /var/local/subsonic/backups
 
@@ -22,7 +22,7 @@
     copy:
       src: etc_systemd_system/{{ item }}
       dest: /etc/systemd/system/{{ item }}
-    with_items:
+    loop:
     - subsonic-backup.service
     - subsonic-backup.timer
 

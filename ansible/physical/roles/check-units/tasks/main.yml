@@ -3,4 +3,4 @@
 
 - include_tasks: user.yml
   when: check_units_users is defined
-  with_items: '{{ check_units_users }}'
+  loop: '{{ check_units_users }}'

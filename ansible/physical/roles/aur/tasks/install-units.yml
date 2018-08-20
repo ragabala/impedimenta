@@ -28,7 +28,7 @@
     template:
       src: update-aur-packages.{{ item }}
       dest: /etc/systemd/system/
-    with_items:
+    loop:
     - service
     - timer
 

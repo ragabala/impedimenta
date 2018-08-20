@@ -9,7 +9,7 @@
     template:
       src: '{{ item }}'
       dest: /etc/systemd/system/{{ item }}
-    with_items:
+    loop:
     - btrfs-balance.service
     - btrfs-balance.timer
 

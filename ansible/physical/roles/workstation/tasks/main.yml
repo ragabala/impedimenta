@@ -88,7 +88,7 @@
     name: "{{ item }}"
     enabled: yes
     daemon_reload: yes
-  with_items:
+  loop:
   - NetworkManager.service
   - lightdm.service
   become: true

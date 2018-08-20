@@ -20,4 +20,4 @@
   become: true
 
 - include_tasks: syncthing-for-user.yml
-  with_items: '{{ syncthing_usernames }}'
+  loop: '{{ syncthing_usernames }}'

@@ -32,7 +32,7 @@
       state: started
       enabled: yes
       daemon_reload: yes
-    with_items:
+    loop:
     - smart-test-long.timer
     - smart-test-short.timer
 

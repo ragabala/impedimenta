@@ -16,7 +16,7 @@
     file:
       path: "{{ item }}"
       state: directory
-    with_items:
+    loop:
     - "{{ user_ichimonji10_home }}/.cache/custom-ctags"
     - "{{ user_ichimonji10_home }}/.vim/undo"
     - "{{ user_ichimonji10_home }}/code"

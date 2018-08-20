@@ -20,7 +20,7 @@
     btrfs_subvolumes: '{{ btrfs_subvolumes | set_escaped_paths }}'
 
 - include_tasks: btrfs-subvolume-delete.yml
-  with_items: '{{ btrfs_subvolumes }}'
+  loop: '{{ btrfs_subvolumes }}'
 
 - include_tasks: btrfs-subvolume-snapshot.yml
-  with_items: '{{ btrfs_subvolumes }}'
+  loop: '{{ btrfs_subvolumes }}'

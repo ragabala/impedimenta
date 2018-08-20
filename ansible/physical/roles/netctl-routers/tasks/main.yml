@@ -17,7 +17,7 @@
       src: "{{ item }}"
       dest: /etc/netctl/{{ item }}
     notify: Restart netctl@{{ item }}.service
-    with_items:
+    loop:
     - dmz
     - lan
     - wan
@@ -37,7 +37,7 @@
   # desired units.
   - name: Create or update netctl services
     command: netctl reenable {{ item }}
-    with_items:
+    loop:
     - dmz
     - lan
     - wan
@@ -51,7 +51,7 @@
       state: started
       enabled: yes
       daemon_reload: yes
-    with_items:
+    loop:
     - dmz
     - lan
     - wan

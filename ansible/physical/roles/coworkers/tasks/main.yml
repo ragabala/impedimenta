@@ -1,2 +1,2 @@
 - include_tasks: create-coworker.yml
-  with_items: '{{ coworkers }}'
+  loop: '{{ coworkers }}'

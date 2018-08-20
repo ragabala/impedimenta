@@ -3,4 +3,4 @@
 - include_tasks: create-repo.yml
 - include_tasks: install-units.yml
 - include_tasks: package-and-install.yml
-  with_items: '{{ aur_packages }}'
+  loop: '{{ aur_packages }}'

@@ -50,7 +50,7 @@
       path: /var/lib/subsonic/transcoders/{{ item }}
       src: /usr/bin/{{ item }}
       state: link
-    with_items:
+    loop:
     - ffmpeg
     - flac
     - lame

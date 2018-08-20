@@ -14,7 +14,7 @@
     file:
       name: '{{ user_ichimonji10_home }}/{{ item }}'
       state: absent
-    with_items:
+    loop:
     - .gitconfig
     - .gitignore_global
 
