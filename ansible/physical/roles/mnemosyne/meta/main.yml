@@ -1,4 +1,3 @@
-# Standards: 0.1
 # The nftables-generic role opens the sync port.
 dependencies:
 - nftables-generic

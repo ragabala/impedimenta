@@ -1,4 +1,3 @@
-# Standards: 0.1
 dependencies:
 - role: check-units
   check_units_users:

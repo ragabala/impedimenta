@@ -1,4 +1,3 @@
-# Standards: 0.1
 - hosts: all
   roles:
   - check-units

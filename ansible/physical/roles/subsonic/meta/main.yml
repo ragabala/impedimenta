@@ -1,5 +1,0 @@
-# Standards: 0.1
-# Subsonic looks at files that these users own.
-dependencies:
-- transmission
-- user-ichimonji10
