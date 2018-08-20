@@ -1,9 +1,10 @@
+---
 - name: Install essential applications
   pacman:
     name:
-    - bash
-    - bind-tools
-    - less
-    - sudo
-    - tree
+      - bash
+      - bind-tools
+      - less
+      - sudo
+      - tree
   become: true

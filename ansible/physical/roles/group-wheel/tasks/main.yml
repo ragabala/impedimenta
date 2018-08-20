@@ -1,3 +1,4 @@
+---
 # We don't create this group, because:
 #
 # * The system package manager probably expects this group to have certain

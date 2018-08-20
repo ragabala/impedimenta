@@ -1,3 +1,4 @@
+---
 # The transmission role creates the transmission group.
 dependencies:
-- transmission
+  - transmission

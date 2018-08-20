@@ -1,8 +1,9 @@
+---
 - name: Install borg and its dependencies
   pacman:
     name:
-    - borg
-    - openssh  # for connecting to borg repositories on remote hosts
+      - borg
+      - openssh  # for connecting to borg repositories on remote hosts
   become: true
 
 - include_tasks: configure-user.yml

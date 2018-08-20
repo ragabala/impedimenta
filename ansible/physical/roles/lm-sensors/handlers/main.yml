@@ -1,4 +1,4 @@
+---
 - name: Detect sensors
   command: sensors-detect --auto
   become: true
-

@@ -1,3 +1,4 @@
+---
 - name: Reload nginx
   systemd:
     name: nginx.service

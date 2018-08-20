@@ -1,11 +1,12 @@
+---
 - name: Install libvirt and related tools
   pacman:
     name:
-    - libvirt
-    - qemu  # libvirt backend
-    - openbsd-netcat  # libvirt management over ssh
-    - virt-install  # libvirt management via console (including virt-clone)
-    - dnsmasq
+      - libvirt
+      - qemu  # libvirt backend
+      - openbsd-netcat  # libvirt management over ssh
+      - virt-install  # libvirt management via console (including virt-clone)
+      - dnsmasq
   become: true
   notify: Set install reason for packages
 
@@ -14,61 +15,61 @@
     name: aur
   vars:
     aur_packages:
-    - libguestfs
+      - libguestfs
 
 - block:
 
-  - block:
+    - block:
 
-    - name: Install NetworkManager
-      pacman:
-        name: networkmanager
-        state: present
+        - name: Install NetworkManager
+          pacman:
+            name: networkmanager
+            state: present
 
-    - name: Install NetworkManager configuration file
+        - name: Install NetworkManager configuration file
+          copy:
+            src: NetworkManager.conf
+            dest: /etc/NetworkManager/
+          register: result
+
+      when: "'workstations' in group_names"
+
+    - name: Reload NetworkManager
+      systemd:
+        name: NetworkManager
+        state: reloaded
+      when: result is changed
+
+    - name: Install dnsmasq configuration file
+      template:
+        src: dnsmasq.conf
+        dest: /etc/dnsmasq.conf
+      notify: Restart dnsmasq
+
+    - name: Install scripts for libvirt and related tools
       copy:
-        src: NetworkManager.conf
-        dest: /etc/NetworkManager/
-      register: result
+        src: usr_local_bin/
+        dest: '/usr/local/bin/'
+        mode: 0755
 
-    when: "'workstations' in group_names"
+    - name: Install units for libvirt and related tools
+      copy:
+        src: etc_systemd_system/
+        dest: /etc/systemd/system/
 
-  - name: Reload NetworkManager
-    systemd:
-      name: NetworkManager
-      state: reloaded
-    when: result is changed
+    - name: Start and enable libvirt
+      systemd:
+        name: libvirtd
+        state: started
+        enabled: true
+        daemon_reload: true  # due to /etc/systemd/system/ changes above
 
-  - name: Install dnsmasq configuration file
-    template:
-      src: dnsmasq.conf
-      dest: /etc/dnsmasq.conf
-    notify: Restart dnsmasq
-
-  - name: Install scripts for libvirt and related tools
-    copy:
-      src: usr_local_bin/
-      dest: '/usr/local/bin/'
-      mode: 0755
-
-  - name: Install units for libvirt and related tools
-    copy:
-      src: etc_systemd_system/
-      dest: /etc/systemd/system/
-
-  - name: Start and enable libvirt
-    systemd:
-      name: libvirtd
-      state: started
-      enabled: yes
-      daemon_reload: yes  # due to /etc/systemd/system/ changes above
-
-  - name: Enable IPv4 forwarding at next boot
-    sysctl:
-      name: net.ipv4.ip_forward
-      value: 1
-      sysctl_file: /etc/sysctl.d/50-libvirtd-networking.conf
-      state: present
-    notify: Enable IPv4 forwarding now
+    - name: Enable IPv4 forwarding at next boot
+      sysctl:
+        name: net.ipv4.ip_forward
+        value: 1
+        sysctl_file: /etc/sysctl.d/50-libvirtd-networking.conf
+        state: present
+      notify: Enable IPv4 forwarding now
 
   become: true

@@ -1,25 +1,26 @@
+---
 - name: Install mnemosyne
   include_role:
     name: aur
   vars:
     aur_packages:
-    - mnemosyne
+      - mnemosyne
 
 - block:
 
-  - name: Install python-cheroot, for the mnemosyne sync server
-    pacman:
-      name: python-cheroot
-      state: present
-    notify: Set install reason for python-cheroot
+    - name: Install python-cheroot, for the mnemosyne sync server
+      pacman:
+        name: python-cheroot
+        state: present
+      notify: Set install reason for python-cheroot
 
-  - name: Create a user for the mnemosyne sync server
-    user:
-      name: '{{ mnemosyne_user }}'
-      home: '{{ mnemosyne_user_home }}'
-      system: true
-      shell: /usr/bin/nologin
-    notify: Lock password
+    - name: Create a user for the mnemosyne sync server
+      user:
+        name: '{{ mnemosyne_user }}'
+        home: '{{ mnemosyne_user_home }}'
+        system: true
+        shell: /usr/bin/nologin
+      notify: Lock password
 
   become: true
 
@@ -35,14 +36,14 @@
 # before proceeding.
 - block:
 
-  - name: Delete {{ mnemosyne_user_home }}/.config/systemd/user/
-    file:
-      path: '{{ mnemosyne_user_home }}/.config/systemd/user/'
-      state: absent
+    - name: Delete {{ mnemosyne_user_home }}/.config/systemd/user/
+      file:
+        path: '{{ mnemosyne_user_home }}/.config/systemd/user/'
+        state: absent
 
-  - name: Disable lingering for {{ mnemosyne_user }}
-    command: loginctl disable-linger {{ mnemosyne_user }}
-    when: result.stdout == 'yes'
+    - name: Disable lingering for {{ mnemosyne_user }}
+      command: loginctl disable-linger {{ mnemosyne_user }}
+      when: result.stdout == 'yes'
 
   become: true
   become_user: '{{ mnemosyne_user }}'
@@ -67,29 +68,29 @@
 # idempotence.
 - block:
 
-  - name: Stop the mnemosyne sync server
-    systemd:
-      name: mnemosyne-sync-server.service
-      state: stopped
-      user: true
+    - name: Stop the mnemosyne sync server
+      systemd:
+        name: mnemosyne-sync-server.service
+        state: stopped
+        user: true
 
-  # This is a kludge. It's be nice if mnemosyne supported a better method for
-  # setting the sync server's username and password.
-  - name: Set the mnemosyne sync server username and password
-    script: >
-      set-sync-credentials.py
-      {{ mnemosyne_user_home }}/.config/mnemosyne/config.db
-      {{ mnemosyne_sync_username }}
-      {{ mnemosyne_sync_password }}
-    become: true
-    become_user: '{{ mnemosyne_user }}'
+    # This is a kludge. It's be nice if mnemosyne supported a better method for
+    # setting the sync server's username and password.
+    - name: Set the mnemosyne sync server username and password
+      script: >
+        set-sync-credentials.py
+        {{ mnemosyne_user_home }}/.config/mnemosyne/config.db
+        {{ mnemosyne_sync_username }}
+        {{ mnemosyne_sync_password }}
+      become: true
+      become_user: '{{ mnemosyne_user }}'
 
-  - name: Start the mnemosyne sync server
-    systemd:
-      name: mnemosyne-sync-server.service
-      state: stopped
-      user: true
+    - name: Start the mnemosyne sync server
+      systemd:
+        name: mnemosyne-sync-server.service
+        state: stopped
+        user: true
 
   when:
-  - mnemosyne_sync_username is defined
-  - mnemosyne_sync_password is defined
+    - mnemosyne_sync_username is defined
+    - mnemosyne_sync_password is defined

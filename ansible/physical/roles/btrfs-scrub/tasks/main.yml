@@ -1,3 +1,4 @@
+---
 - block:
 
   - name: Install btrfs-progs
@@ -9,7 +10,7 @@
     systemd:
       name: btrfs-scrub@{{ btrfs_path | systemd_escape }}.timer
       state: started
-      enabled: yes
-      daemon_reload: yes
+      enabled: true
+      daemon_reload: true
 
   become: true

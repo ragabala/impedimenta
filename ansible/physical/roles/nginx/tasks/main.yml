@@ -1,3 +1,4 @@
+---
 - block:
 
   - name: Install nginx
@@ -55,14 +56,14 @@
       mode: 0644
       directory_mode: 0755
     loop:
-    - www.backtobasicsreading.com
-    - www.ichimonji10.name
+      - www.backtobasicsreading.com
+      - www.ichimonji10.name
 
   - name: Start and enable nginx
     systemd:
       name: nginx.service
       state: started
-      enabled: yes
-      daemon_reload: yes
+      enabled: true
+      daemon_reload: true
 
   become: true

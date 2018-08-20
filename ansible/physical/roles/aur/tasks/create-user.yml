@@ -1,3 +1,4 @@
+---
 - block:
 
   # A home directory is necessary so that aurutils can cache files in

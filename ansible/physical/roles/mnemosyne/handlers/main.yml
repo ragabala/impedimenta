@@ -1,3 +1,4 @@
+---
 - name: Lock password
   command: passwd --lock mnemosyne
   become: true

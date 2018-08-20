@@ -1,10 +1,11 @@
+---
 # The "sys" group is for printing. See:
 # https://wiki.archlinux.org/index.php/Printing#Configuration
 - name: Define a list of groups that ichimonji10 belongs to
   set_fact:
     user_ichimonji10_groups:
-    - sys
-    - wheel
+      - sys
+      - wheel
   become: true
 
 - name: Append "docker" to the list of groups

@@ -1,27 +1,28 @@
+---
 - name: Install development tools
   pacman:
     name:
-    - ansible
-    - ansible-lint
-    - cmark
-    - ctags
-    - git
-    - graphviz
-    - namcap
-    - pacman-contrib
-    - python-docutils  # for rst2html
-    - python-passlib  # for ansible's htpasswd module
-    - python-pylint
-    - python-wheel
-    - shellcheck
-    - sshpass  # optional for ansible
-    - tmux
-    - twine
-    - vim
-    - vim-jellybeans
-    - vim-nerdtree
-    - vim-tagbar
-    - wget
+      - ansible
+      - ansible-lint
+      - cmark
+      - ctags
+      - git
+      - graphviz
+      - namcap
+      - pacman-contrib
+      - python-docutils  # for rst2html
+      - python-passlib  # for ansible's htpasswd module
+      - python-pylint
+      - python-wheel
+      - shellcheck
+      - sshpass  # optional for ansible
+      - tmux
+      - twine
+      - vim
+      - vim-jellybeans
+      - vim-nerdtree
+      - vim-tagbar
+      - wget
   become: true
   notify: Set install reason for optional dependencies
 
@@ -30,10 +31,11 @@
     name: aur
   vars:
     aur_packages:
-    - entr
-    - python-rst2pdf
-    - python36
-    - vim-badwolf-git
-    - vim-hemisu-git
-    - vim-mark
-    - vim-undotree
+      - entr
+      - python-rst2pdf
+      - python36
+      - vim-badwolf-git
+      - vim-hemisu-git
+      - vim-mark
+      - vim-undotree
+      - yamllint

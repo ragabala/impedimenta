@@ -1,3 +1,4 @@
+---
 - name: Set inotify watch limit now
   command: 'sysctl --load=/etc/sysctl.d/50-syncthing.conf'
   become: true

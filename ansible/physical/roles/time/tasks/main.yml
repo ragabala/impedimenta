@@ -1,3 +1,4 @@
+---
 - block:
 
   - name: Set timezone
@@ -10,6 +11,6 @@
     systemd:
       name: systemd-timesyncd.service
       state: started
-      enabled: yes
+      enabled: true
 
   become: true

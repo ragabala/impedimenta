@@ -1,3 +1,4 @@
+---
 - block:
 
   - name: Install a script to delete old subvolumes
@@ -9,7 +10,9 @@
   - name: Install .service to delete old snapshots of {{ item.path }}
     template:
       src: btrfs-subvolume-delete.service
-      dest: /etc/systemd/system/btrfs-subvolume-delete-{{ item.escaped_path }}.service
+      dest: >
+        /etc/systemd/system/btrfs-subvolume-delete-{{ item.escaped_path
+        }}.service
     vars:
       path: '{{ item.path }}'
       days: '{{ item.days|default(14) }}'
@@ -18,7 +21,8 @@
   - name: Install .timer to delete old snapshots of {{ item.path }}
     template:
       src: btrfs-subvolume-delete.timer
-      dest: /etc/systemd/system/btrfs-subvolume-delete-{{ item.escaped_path }}.timer
+      dest: >
+        /etc/systemd/system/btrfs-subvolume-delete-{{ item.escaped_path }}.timer
     vars:
       path: '{{ item.path }}'
 
@@ -26,27 +30,31 @@
     systemd:
       name: btrfs-subvolume-delete-{{ item.escaped_path }}.timer
       state: started
-      enabled: yes
-      daemon_reload: yes
+      enabled: true
+      daemon_reload: true
 
   when: item.delete | default(true)
   become: true
 
 - block:
 
-  - name: Delete .service to delete old snapshots of {{ item.path }}
-    file:
-      path: /etc/systemd/system/btrfs-subvolume-delete-{{ item.escaped_path }}.service
-      state: absent
-    notify: Reload systemd
+    - name: Delete .service to delete old snapshots of {{ item.path }}
+      file:
+        path: >
+          /etc/systemd/system/btrfs-subvolume-delete-{{ item.escaped_path
+          }}.service
+        state: absent
+      notify: Reload systemd
 
-  - name: Install .timer to delete old snapshots of {{ item.path }}
-    file:
-      path: /etc/systemd/system/btrfs-subvolume-delete-{{ item.escaped_path }}.timer
-      state: absent
-    notify: Reload systemd
+    - name: Install .timer to delete old snapshots of {{ item.path }}
+      file:
+        path: >
+          /etc/systemd/system/btrfs-subvolume-delete-{{ item.escaped_path
+          }}.timer
+        state: absent
+      notify: Reload systemd
 
   when:
-  - item.delete is defined
-  - item.delete == false
+    - item.delete is defined
+    - item.delete == false
   become: true

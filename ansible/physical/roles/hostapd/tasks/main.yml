@@ -1,46 +1,47 @@
+---
 # NOTE: Execute this play only over a wired connection.
 - block:
 
-  - name: Install hostapd
-    pacman:
-      name: hostapd
+    - name: Install hostapd
+      pacman:
+        name: hostapd
 
-  # When hostapd's configuration file changes, it must be restarted, because
-  # many changes aren't taken into account by a simple reload.
-  - name: Configure hostapd
-    template:
-      src: hostapd.conf
-      dest: /etc/hostapd/hostapd.conf
-      mode: 0600
-    notify: Restart hostapd
-    when:
-    - hostapd_passphrase is defined
-    - hostapd_wlan_if is defined
+    # When hostapd's configuration file changes, it must be restarted, because
+    # many changes aren't taken into account by a simple reload.
+    - name: Configure hostapd
+      template:
+        src: hostapd.conf
+        dest: /etc/hostapd/hostapd.conf
+        mode: 0600
+      notify: Restart hostapd
+      when:
+        - hostapd_passphrase is defined
+        - hostapd_wlan_if is defined
 
-  - name: Install hostapd override file
-    copy:
-      src: hostapd.service.d
-      dest: /etc/systemd/system/
+    - name: Install hostapd override file
+      copy:
+        src: hostapd.service.d
+        dest: /etc/systemd/system/
 
-  - name: Install wlan-secure unit file
-    template:
-      src: wlan-secure.service
-      dest: /etc/systemd/system/
-    when: hostapd_wlan_if is defined
+    - name: Install wlan-secure unit file
+      template:
+        src: wlan-secure.service
+        dest: /etc/systemd/system/
+      when: hostapd_wlan_if is defined
 
-  - name: Start and enable hostapd
-    systemd:
-      name: hostapd.service
-      state: started
-      enabled: true
-      daemon_reload: true
+    - name: Start and enable hostapd
+      systemd:
+        name: hostapd.service
+        state: started
+        enabled: true
+        daemon_reload: true
 
-  # This task cleans up after legacy configurations.
-  - name: Disable wlan-secure.service
-    systemd:
-      name: wlan-secure.service
-      enabled: false
-      daemon_reload: true
+    # This task cleans up after legacy configurations.
+    - name: Disable wlan-secure.service
+      systemd:
+        name: wlan-secure.service
+        enabled: false
+        daemon_reload: true
 
   become: true
 
@@ -49,26 +50,26 @@
   stat:
     path: /etc/systemd/system/{{ item }}
   loop:
-  - log-entropy.service
-  - log-entropy.timer
+    - log-entropy.service
+    - log-entropy.timer
   register: result
 
 - block:
 
-  - name: Stop and disable units for logging entropy
-    systemd:
-      name: '{{ item.item }}'
-      state: stopped
-      enabled: false
-    when: item.stat.exists
-    loop: '{{ result.results }}'
+    - name: Stop and disable units for logging entropy
+      systemd:
+        name: '{{ item.item }}'
+        state: stopped
+        enabled: false
+      when: item.stat.exists
+      loop: '{{ result.results }}'
 
-  - name: Delete unit files for logging entropy
-    file:
-      path: /etc/systemd/system/{{ item.item }}
-      state: absent
-    when: item.stat.exists
-    loop: '{{ result.results }}'
-    notify: Reload systemd
+    - name: Delete unit files for logging entropy
+      file:
+        path: /etc/systemd/system/{{ item.item }}
+        state: absent
+      when: item.stat.exists
+      loop: '{{ result.results }}'
+      notify: Reload systemd
 
   become: true

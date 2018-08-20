@@ -1,3 +1,4 @@
+---
 # The AUR update service was initially implemented as a --user service. We need
 # to make sure that that service and supporting services are not running before
 # proceeding.
@@ -24,19 +25,19 @@
 
 - block:
 
-  - name: Install units to update AUR packages
-    template:
-      src: update-aur-packages.{{ item }}
-      dest: /etc/systemd/system/
-    loop:
-    - service
-    - timer
+    - name: Install units to update AUR packages
+      template:
+        src: update-aur-packages.{{ item }}
+        dest: /etc/systemd/system/
+      loop:
+        - service
+        - timer
 
-  - name: Start and enable units to update AUR packages
-    systemd:
-      name: update-aur-packages.timer
-      state: started
-      enabled: true
-      daemon_reload: true
+    - name: Start and enable units to update AUR packages
+      systemd:
+        name: update-aur-packages.timer
+        state: started
+        enabled: true
+        daemon_reload: true
 
   become: true

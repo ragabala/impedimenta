@@ -1,3 +1,4 @@
+---
 - block:
 
   - name: Install openvpn
@@ -16,8 +17,8 @@
       dest: /etc/openvpn/client/credentials
       mode: 0700
     when:
-    - openvpn_client_ivpn_username is defined
-    - openvpn_client_ivpn_password is defined
+      - openvpn_client_ivpn_username is defined
+      - openvpn_client_ivpn_password is defined
 
   - name: Install routing configuration scripts
     copy:
@@ -28,7 +29,7 @@
   - name: Define the priority of the "tunnel" routing table
     blockinfile:
       path: /etc/iproute2/rt_tables
-      create: no
+      create: false
       block: |
         # For openvpn-client@ivpn.
         100 tunnel

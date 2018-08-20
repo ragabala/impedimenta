@@ -1,3 +1,4 @@
+---
 - name: Restart hostapd
   systemd:
     name: apcupsd.service

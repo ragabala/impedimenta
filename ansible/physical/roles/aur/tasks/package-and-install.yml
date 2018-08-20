@@ -1,3 +1,4 @@
+---
 # It's important to check if {{ item }} is packaged, and to *not* check if {{
 # item }} is installed. Why? Imagine the following scenario:
 #
@@ -13,9 +14,9 @@
 # }} it encounters.
 - name: Check if {{ item }} is packaged
   command: pacman -Si aur/{{ item }}
-  changed_when: False
-  check_mode: False
-  failed_when: False
+  changed_when: false
+  check_mode: false
+  failed_when: false
   register: result
 
 - block:

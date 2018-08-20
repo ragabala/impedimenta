@@ -1,9 +1,10 @@
+---
 - name: Install Subsonic
   include_role:
     name: aur
   vars:
     aur_packages:
-    - subsonic
+      - subsonic
 
 - include_tasks: configure-subsonic.yml
 - include_tasks: configure-backups.yml
@@ -12,5 +13,5 @@
   systemd:
     name: subsonic
     state: started
-    enabled: yes
+    enabled: true
   become: true

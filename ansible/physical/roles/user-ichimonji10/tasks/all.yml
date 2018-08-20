@@ -1,3 +1,4 @@
+---
 - block:
 
   - name: Create directories named by ~/.bashrc
@@ -17,9 +18,9 @@
       path: "{{ item }}"
       state: directory
     loop:
-    - "{{ user_ichimonji10_home }}/.cache/custom-ctags"
-    - "{{ user_ichimonji10_home }}/.vim/undo"
-    - "{{ user_ichimonji10_home }}/code"
+      - "{{ user_ichimonji10_home }}/.cache/custom-ctags"
+      - "{{ user_ichimonji10_home }}/.vim/undo"
+      - "{{ user_ichimonji10_home }}/code"
     become_user: ichimonji10
 
   - name: Install ~/.vimrc

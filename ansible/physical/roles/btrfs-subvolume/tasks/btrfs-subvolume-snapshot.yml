@@ -1,16 +1,21 @@
+---
 - block:
 
   - name: Install .service to snapshot {{ item.path }}
     template:
       src: btrfs-subvolume-snapshot.service
-      dest: /etc/systemd/system/btrfs-subvolume-snapshot-{{ item.escaped_path }}.service
+      dest: >
+        /etc/systemd/system/btrfs-subvolume-snapshot-{{ item.escaped_path
+        }}.service
     vars:
       path: "{{ item.path }}"
 
   - name: Install .timer to snapshot {{ item.path }}
     template:
       src: btrfs-subvolume-snapshot.timer
-      dest: /etc/systemd/system/btrfs-subvolume-snapshot-{{ item.escaped_path }}.timer
+      dest: >
+        /etc/systemd/system/btrfs-subvolume-snapshot-{{ item.escaped_path
+        }}.timer
     vars:
       path: "{{ item.path }}"
 
@@ -18,27 +23,31 @@
     systemd:
       name: btrfs-subvolume-snapshot-{{ item.escaped_path }}.timer
       state: started
-      enabled: yes
-      daemon_reload: yes
+      enabled: true
+      daemon_reload: true
 
   when: item.snapshot | default(true)
   become: true
 
 - block:
 
-  - name: Delete .service to snapshot {{ item.path }}
-    file:
-      path: /etc/systemd/system/btrfs-subvolume-snapshot-{{ item.escaped_path }}.service
-      state: absent
-    notify: Reload systemd
+    - name: Delete .service to snapshot {{ item.path }}
+      file:
+        path: >
+          /etc/systemd/system/btrfs-subvolume-snapshot-{{ item.escaped_path
+          }}.service
+        state: absent
+      notify: Reload systemd
 
-  - name: Delete .timer to snapshot {{ item.path }}
-    file:
-      path: /etc/systemd/system/btrfs-subvolume-snapshot-{{ item.escaped_path }}.timer
-      state: absent
-    notify: Reload systemd
+    - name: Delete .timer to snapshot {{ item.path }}
+      file:
+        path: >
+          /etc/systemd/system/btrfs-subvolume-snapshot-{{ item.escaped_path
+          }}.timer
+        state: absent
+      notify: Reload systemd
 
   when:
-  - item.snapshot is defined
-  - item.snapshot == false
+    - item.snapshot is defined
+    - item.snapshot == false
   become: true

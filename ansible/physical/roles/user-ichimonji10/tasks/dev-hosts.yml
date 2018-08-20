@@ -1,3 +1,4 @@
+---
 - block:
 
   - name: Create ~/.config/git/
@@ -15,8 +16,8 @@
       name: '{{ user_ichimonji10_home }}/{{ item }}'
       state: absent
     loop:
-    - .gitconfig
-    - .gitignore_global
+      - .gitconfig
+      - .gitignore_global
 
   - name: Install ~/.pypirc (for twine)
     copy:

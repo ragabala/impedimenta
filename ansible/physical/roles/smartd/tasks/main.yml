@@ -1,3 +1,4 @@
+---
 - block:
 
   - name: Install smartmontools
@@ -13,7 +14,7 @@
     systemd:
       name: smartd
       state: started
-      enabled: yes
+      enabled: true
 
   - name: Install scripts for starting SMART scans
     copy:
@@ -30,10 +31,10 @@
     systemd:
       name: "{{ item }}"
       state: started
-      enabled: yes
-      daemon_reload: yes
+      enabled: true
+      daemon_reload: true
     loop:
-    - smart-test-long.timer
-    - smart-test-short.timer
+      - smart-test-long.timer
+      - smart-test-short.timer
 
   become: true

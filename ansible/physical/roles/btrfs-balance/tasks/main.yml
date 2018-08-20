@@ -1,3 +1,4 @@
+---
 - block:
 
   - name: Install btrfs-progs
@@ -10,14 +11,14 @@
       src: '{{ item }}'
       dest: /etc/systemd/system/{{ item }}
     loop:
-    - btrfs-balance.service
-    - btrfs-balance.timer
+      - btrfs-balance.service
+      - btrfs-balance.timer
 
   - name: Start and enable timer for starting btrfs balances
     systemd:
       name: btrfs-balance.timer
       state: started
-      enabled: yes
-      daemon_reload: yes
+      enabled: true
+      daemon_reload: true
 
   become: true

@@ -1,3 +1,4 @@
+---
 - block:
 
   - name: Enable desired locales
@@ -5,8 +6,8 @@
       name: "{{ item }}"
       state: present
     loop:
-    - en_US
-    - en_US.UTF-8
+      - en_US
+      - en_US.UTF-8
 
   - name: Set LANG in /etc/locale.conf
     copy:

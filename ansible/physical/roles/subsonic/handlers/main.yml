@@ -1,3 +1,4 @@
+---
 - name: Restart subsonic
   systemd:
     name: subsonic

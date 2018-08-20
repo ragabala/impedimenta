@@ -8,8 +8,9 @@ help:
 	@echo "  lint-ansible-lint  to run ansible-lint"
 	@echo "  lint-pylint        to run pylint"
 	@echo "  lint-syntax-check  to run ansible-playbook --syntax-check"
+	@echo "  lint-yamllint      to run yamllint"
 
-lint: lint-syntax-check lint-ansible-lint lint-pylint
+lint: lint-syntax-check lint-ansible-lint lint-pylint lint-yamllint
 
 # ANSIBLE0017: become_user requires become to work as expected
 #
@@ -25,4 +26,7 @@ lint-pylint:
 lint-syntax-check:
 	ansible-playbook site.yml --syntax-check
 
-.PHONY: help lint lint-ansible-lint lint-pylint lint-syntax-check
+lint-yamllint:
+	yamllint --strict .
+
+.PHONY: help lint lint-ansible-lint lint-pylint lint-syntax-check lint-yamllint

@@ -1,6 +1,7 @@
+---
 - name: Install systemd-boot-pacman-hook
   include_role:
     name: aur
   vars:
     aur_packages:
-    - systemd-boot-pacman-hook
+      - systemd-boot-pacman-hook

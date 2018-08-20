@@ -1,11 +1,12 @@
+---
 - block:
 
   - name: Install msmtp and related tools
     pacman:
       name:
-      - msmtp
-      - msmtp-mta
-      - s-nail
+        - msmtp
+        - msmtp-mta
+        - s-nail
     notify: Set install reason for packages
 
   - name: Create a group authorized to send emails

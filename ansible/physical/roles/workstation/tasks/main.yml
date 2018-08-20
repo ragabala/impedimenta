@@ -1,11 +1,12 @@
+---
 - block:
 
   # See: https://wiki.archlinux.org/index.php/Hardware_video_acceleration
   - name: Install video driver (beech)
     pacman:
       name:
-      - mesa-vdpau
-      - xf86-video-amdgpu
+        - mesa-vdpau
+        - xf86-video-amdgpu
       state: present
     when: "inventory_hostname == 'beech.ichimonji10.name'"
 
@@ -13,59 +14,62 @@
   - name: Install video driver (butternut)
     pacman:
       name:
-      - mesa-vdpau
-      - xf86-video-amdgpu
+        - mesa-vdpau
+        - xf86-video-amdgpu
       state: present
     when: "inventory_hostname == 'butternut.ichimonji10.name'"
 
   # NOTE: We assume base and base-devel are already present, and were enabled at
   # install time. Requiring it at a later time can be problematic if the
   # multilib repository is enabled.
+  #
+  # To integrate light-locker with XFCE:
+  # https://wiki.archlinux.org/index.php/Xfce#Panel_lock_button
   - name: Install applications
     pacman:
       name:
-      - audacious
-      - calibre
-      - chromium
-      - easytag
-      - evince
-      - exfat-utils
-      - file-roller
-      - firefox
-      - gimp
-      - gnome-keyring
-      - gptfdisk
-      - gvfs  # optional for thunar
-      - hexchat
-      - iperf3
-      - light-locker  # https://wiki.archlinux.org/index.php/Xfce#Panel_lock_button
-      - lightdm
-      - lightdm-gtk-greeter-settings
-      - lshw
-      - lsof
-      - network-manager-applet
-      - networkmanager
-      - networkmanager-openvpn
-      - noto-fonts
-      - noto-fonts-emoji
-      - ntfs-3g
-      - openssh
-      - p7zip
-      - pavucontrol
-      - picocom
-      - pulseaudio
-      - qt4  # for vlc
-      - simple-scan
-      - sshfs
-      - system-config-printer
-      - texlive-core  # for mnemosyne
-      - unrar
-      - virt-manager
-      - vlc
-      - xclip
-      - xfce4
-      - xfce4-goodies
-      - xorg-server
+        - audacious
+        - calibre
+        - chromium
+        - easytag
+        - evince
+        - exfat-utils
+        - file-roller
+        - firefox
+        - gimp
+        - gnome-keyring
+        - gptfdisk
+        - gvfs  # optional for thunar
+        - hexchat
+        - iperf3
+        - light-locker  # see comments above
+        - lightdm
+        - lightdm-gtk-greeter-settings
+        - lshw
+        - lsof
+        - network-manager-applet
+        - networkmanager
+        - networkmanager-openvpn
+        - noto-fonts
+        - noto-fonts-emoji
+        - ntfs-3g
+        - openssh
+        - p7zip
+        - pavucontrol
+        - picocom
+        - pulseaudio
+        - qt4  # for vlc
+        - simple-scan
+        - sshfs
+        - system-config-printer
+        - texlive-core  # for mnemosyne
+        - unrar
+        - virt-manager
+        - vlc
+        - xclip
+        - xfce4
+        - xfce4-goodies
+        - xorg-server
       state: present
     notify: Set install reason for optional dependencies
 
@@ -76,27 +80,27 @@
     name: aur
   vars:
     aur_packages:
-    - brother-hll2395dw
-    - brscan4
-    - mnemosyne
-    - ms-sys
+      - brother-hll2395dw
+      - brscan4
+      - mnemosyne
+      - ms-sys
 
 # Immediately starting these applications - especially at install time - could
 # cause complications.
 - name: Enable (but don't start) desirable applications
   systemd:
     name: "{{ item }}"
-    enabled: yes
-    daemon_reload: yes
+    enabled: true
+    daemon_reload: true
   loop:
-  - NetworkManager.service
-  - lightdm.service
+    - NetworkManager.service
+    - lightdm.service
   become: true
 
 - name: Enable and start CUPS
   systemd:
     name: org.cups.cupsd
     state: started
-    enabled: yes
-    daemon_reload: yes
+    enabled: true
+    daemon_reload: true
   become: true
