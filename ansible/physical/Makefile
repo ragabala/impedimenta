@@ -7,10 +7,11 @@ help:
 	@echo "  lint               to run all linters"
 	@echo "  lint-ansible-lint  to run ansible-lint"
 	@echo "  lint-pylint        to run pylint"
+	@echo "  lint-shellcheck    to run shellcheck"
 	@echo "  lint-syntax-check  to run ansible-playbook --syntax-check"
 	@echo "  lint-yamllint      to run yamllint"
 
-lint: lint-syntax-check lint-ansible-lint lint-pylint lint-yamllint
+lint: lint-syntax-check lint-ansible-lint lint-pylint lint-shellcheck lint-yamllint
 
 # ANSIBLE0017: become_user requires become to work as expected
 #
@@ -23,10 +24,13 @@ lint-ansible-lint:
 lint-pylint:
 	find . -type f -name '*.py' -print0 | xargs -0 pylint -j $(CPU_COUNT)
 
+lint-shellcheck:
+	find . -type d -name templates -prune -o -type f -name '*.sh' -print0 | xargs -0 shellcheck
+
 lint-syntax-check:
 	ansible-playbook site.yml --syntax-check
 
 lint-yamllint:
 	yamllint --strict .
 
-.PHONY: help lint lint-ansible-lint lint-pylint lint-syntax-check lint-yamllint
+.PHONY: help lint lint-ansible-lint lint-pylint lint-shellcheck lint-syntax-check lint-yamllint

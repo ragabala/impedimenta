@@ -1,4 +1,6 @@
 #!/usr/bin/env sh
+# coding=utf-8
+# shellcheck disable=SC2154
 #
 # Configure routing tables to implement split routing based on source IP. This
 # script should be called by openvpn's `--route-up` option.
