@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# coding=utf-8
 #
 # Clone and customize several libvirt domains.
 #
@@ -43,8 +44,8 @@ main() {
     done
     if [ -z "${1:-}" ]; then echo >&2 'Missing parameter <bases>.'; exit 1; fi
     if [ -z "${2:-}" ]; then echo >&2 'Missing parameter <suffixes>.'; exit 1; fi
-    IFS=',' read -ra bases <<< "$1"
-    IFS=',' read -ra suffixes <<< "$2"
+    mapfile -t -d ',' bases < <(echo -n "$1")
+    mapfile -t -d ',' suffixes < <(echo -n "$2")
     shift 2
 
     # Set non-argument variables.
@@ -282,7 +283,7 @@ create_clones() {
 #
 # Arguments: bases, suffixes, uid
 _set_disk_permissions() {
-    local cmd i path words base suffix
+    local cmd path paths base suffix
     for base in "${bases[@]}"; do
         for suffix in "${suffixes[@]}"; do
             # Sample `virsh --quiet domblklist` output:
@@ -293,20 +294,12 @@ _set_disk_permissions() {
             # I've never seen a device name (traditional or udev) containing
             # whitespace, and libvirt doesn't allow whitespace in disk image
             # paths, so it's probably OK to split input on whitespace.
-            words=($(
-                virsh --quiet domblklist "${base}${suffix}" \
-                | tr --squeeze-repeats '[:space:]' '\012'
-            ))
-
-            # Select odd words. Even and odd words are device names and disk
-            # image paths, respectively.
-            for i in $(seq 1 2 ${#words[@]}); do
-                path="${words["$i"]}"
+            mapfile -t paths < <(virsh --quiet domblklist "${base}${suffix}" | awk '{print $2}')
+            for path in "${paths[@]}"; do
                 if [ "$path" == '-' ]; then
                     continue
                 fi
                 echo "Setting permissions on $path"
-
                 # shellcheck disable=SC2016
                 {
                 cmd=''

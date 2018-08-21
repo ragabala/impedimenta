@@ -6,6 +6,7 @@
       path: "{{ user_ichimonji10_home }}/.local/bin/{{ item }}"
       state: absent
     loop:
+      - clone-customize-domains
       - psmash-runner-3
       - psmash-runner-3-pypi
       - psmash-runner-3-qpid
