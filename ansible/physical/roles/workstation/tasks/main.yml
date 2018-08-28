@@ -63,6 +63,7 @@
         - sshfs
         - system-config-printer
         - texlive-core  # for mnemosyne
+        - ttf-dejavu
         - unrar
         - virt-manager
         - vlc
