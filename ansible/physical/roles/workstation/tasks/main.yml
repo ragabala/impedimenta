@@ -11,13 +11,13 @@
     when: "inventory_hostname == 'beech.ichimonji10.name'"
 
   # See: https://wiki.archlinux.org/index.php/Hardware_video_acceleration
-  - name: Install video driver (butternut)
+  - name: Install video driver (tupelo)
     pacman:
       name:
         - mesa-vdpau
         - xf86-video-amdgpu
       state: present
-    when: "inventory_hostname == 'butternut.ichimonji10.name'"
+    when: "inventory_hostname == 'tupelo.ichimonji10.name'"
 
   # NOTE: We assume base and base-devel are already present, and were enabled at
   # install time. Requiring it at a later time can be problematic if the
