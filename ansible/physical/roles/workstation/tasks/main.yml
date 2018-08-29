@@ -85,6 +85,7 @@
       - brscan4
       - mnemosyne
       - ms-sys
+      - zoom
 
 # Immediately starting these applications - especially at install time - could
 # cause complications.
