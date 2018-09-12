@@ -17,5 +17,5 @@ if [ ! -e "${src}" ]; then
         http://files.grouplens.org/datasets/movielens/ml-latest-small.zip
 fi
 if [ ! -e "${dst}" ]; then
-    install -D "${src}" "${dst}"
+    install -Dm640 "${src}" "${dst}"
 fi

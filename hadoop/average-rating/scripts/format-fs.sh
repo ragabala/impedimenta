@@ -6,7 +6,7 @@
 # them from working together.
 set -euo pipefail
 
-make data/hadoop-2.9.1
+make data/hadoop-3.1.1
 
 source scripts/hadoop-env.sh
-data/hadoop-2.9.1/bin/hdfs namenode -format
+data/hadoop-3.1.1/bin/hdfs namenode -format

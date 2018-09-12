@@ -4,4 +4,20 @@
         <name>mapreduce.framework.name</name>
         <value>yarn</value>
     </property>
+    <!--
+    For some reason, HADOOP_MAPRED_HOME isn't inherited from the environment.
+    `<value>HADOOP_MAPRED_HOME=${HADOOP_MAPRED_HOME}</value>` doesn't work.
+    -->
+    <property>
+        <name>yarn.app.mapreduce.am.env</name>
+        <value>HADOOP_MAPRED_HOME=${HADOOP_HOME}</value>
+    </property>
+    <property>
+        <name>mapreduce.map.env</name>
+        <value>HADOOP_MAPRED_HOME=${HADOOP_HOME}</value>
+    </property>
+    <property>
+        <name>mapreduce.reduce.env</name>
+        <value>HADOOP_MAPRED_HOME=${HADOOP_HOME}</value>
+    </property>
 </configuration>
