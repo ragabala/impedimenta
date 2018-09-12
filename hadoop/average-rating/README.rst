@@ -4,11 +4,8 @@ Average Rating
 Calculate the average rating of each movie in MovieLens' latest-small dataset,
 with Hadoop.
 
-Administration
---------------
-
-Hadoop deployments can significantly vary For my specific pseudo-distributed
-deployment, do the following:
+Hadoop deployments can significantly vary. I've tested this application on a
+pseudo-distributed deployment as follows:
 
 1. Start sshd, and ensure ``ssh localhost`` works without a password.
 2. Format the HDFS filesystem.
