@@ -2,9 +2,7 @@
 # coding=utf-8
 set -euo pipefail
 
-export JAVA_HOME=/usr/lib/jvm/default
-export HADOOP_CONF_DIR="$(realpath --canonicalize-existing configs)"
-
+source scripts/common.sh
 readonly src='data/ml-latest-small'
 make "${src}"
 if ~/data/hadoop-2.9.1/bin/hadoop fs -ls "/$(basename "${src}")" >/dev/null; then

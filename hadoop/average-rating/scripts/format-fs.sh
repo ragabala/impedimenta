@@ -6,7 +6,5 @@
 # them from working together.
 set -euo pipefail
 
-export JAVA_HOME=/usr/lib/jvm/default
-export HADOOP_CONF_DIR="$(realpath --canonicalize-existing configs)"
-
+source scripts/common.sh
 ~/data/hadoop-2.9.1/bin/hdfs namenode -format

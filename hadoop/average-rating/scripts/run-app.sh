@@ -2,9 +2,7 @@
 # coding=utf-8
 set -euo pipefail
 
-export JAVA_HOME=/usr/lib/jvm/default
-export HADOOP_CONF_DIR="$(realpath --canonicalize-existing configs)"
-
+source scripts/common.sh
 ~/data/hadoop-2.9.1/bin/hadoop \
     jar target/average-rating-1-SNAPSHOT.jar \
     name.ichimonji10.app.AverageRating \
