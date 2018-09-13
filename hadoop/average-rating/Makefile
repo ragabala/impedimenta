@@ -5,14 +5,8 @@
 
 data: data/ml-latest-small data/hadoop-3.1.1
 
-data/ml-latest-small: | data/ml-latest-small.zip
-	unzip -d data data/ml-latest-small.zip
+data/ml-latest-small:
+	scripts/install-ml-latest-small.sh
 
-data/ml-latest-small.zip:
-	scripts/install-ml-latest-small-zip.sh
-
-data/hadoop-3.1.1: | data/hadoop-3.1.1.tar.gz
-	tar -xz --directory=data -f data/hadoop-3.1.1.tar.gz
-
-data/hadoop-3.1.1.tar.gz:
-	scripts/install-hadoop-tar-gz.sh
+data/hadoop-3.1.1:
+	scripts/install-hadoop.sh
