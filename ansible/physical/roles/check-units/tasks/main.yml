@@ -2,6 +2,8 @@
 - include_tasks: system.yml
   when: check_units_users is undefined
 
+# If `loop:` is used to iterate over a list, and if that list contains only one
+# element, then the list itself is passed to the target block.
 - include_tasks: user.yml
   when: check_units_users is defined
-  loop: '{{ check_units_users }}'
+  with_items: '{{ check_units_users }}'
