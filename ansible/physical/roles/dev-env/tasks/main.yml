@@ -8,12 +8,15 @@
       - ctags
       - git
       - graphviz
+      - jdk8-openjdk
       - namcap
       - pacman-contrib
       - python-docutils  # for rst2html
       - python-passlib  # for ansible's htpasswd module
       - python-pylint
       - python-wheel
+      - sbt
+      - scala
       - shellcheck
       - sshpass  # optional for ansible
       - tmux
