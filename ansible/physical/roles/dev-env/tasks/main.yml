@@ -34,11 +34,14 @@
     name: aur
   vars:
     aur_packages:
+      - apache-spark
       - entr
       - python-rst2pdf
       - python36
+      - slf4j  # for apache-spark
       - vim-badwolf-git
       - vim-hemisu-git
       - vim-mark
       - vim-undotree
       - yamllint
+  notify: Set install reason for optional dependencies
