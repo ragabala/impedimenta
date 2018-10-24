@@ -1,4 +1,4 @@
-package name.ichimonji10.star_distance
+package name.ichimonji10.hw04
 
 import java.util.regex.Pattern
 import org.apache.spark.SparkConf
@@ -12,7 +12,7 @@ object Main {
 
   def main(args: Array[String]): Unit = {
     val optionParser: OptionParser = new OptionParser(args)
-    val cfg: SparkConf = new SparkConf().setAppName("Star Distance")
+    val cfg: SparkConf = new SparkConf().setAppName("Hw04")
     val context: SparkContext = new SparkContext(cfg)
 
     // (starId, eLongitude) pairs

@@ -1,4 +1,4 @@
-package name.ichimonji10.star_distance
+package name.ichimonji10.hw04
 
 import org.scalatest.FlatSpec
 
